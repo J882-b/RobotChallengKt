@@ -1,5 +1,7 @@
 package robot
 
+import kotlin.browser.window
+
 /*
     function Game() {
         var board = new Board();
@@ -80,15 +82,10 @@ class Game {
             if (tank.isAlive()) {
                 tank.move(board)
             }
-
-            // TODO: Debug
-            js("setTimeout(function() { nextMove() }, 200)")
+            window.setTimeout({nextToMoveQueue}, 200)
         } else {
-            // TODO
-            // val alertMessage = "The winner is ${nextToMoveQueue[0].strategy.name}"
-            val alertMessage = "We have a winner!"
-            js("alert('$alertMessage')")
+            val alertMessage = "The winner is ${nextToMoveQueue[0].strategy.name}"
+            window.alert(alertMessage)
         }
     }
-
 }
