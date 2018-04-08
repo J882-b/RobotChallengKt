@@ -22,3 +22,40 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
+
+compileKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+}
+
+clean.doFirst() {
+    delete("${projectDir}/web")
+}
+
+task assembleWeb(type: Sync) {
+    // Copy kotlin.js stuff
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                (path.endsWith(".js") || path.endsWith(".js.map")) &&
+                        (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        })
+    }
+
+    // Copy project JS
+    from compileKotlin2Js.destinationDir
+    into "${projectDir}/web"
+
+    // Copy project resources
+    File resourcesDir = new File (compileKotlin2Js.destinationDir.absolutePath
+            .replace("classes" + File.separator  + "kotlin", "resources"))
+    from resourcesDir
+    into "${projectDir}/web"
+
+    dependsOn classes
+}
+
+assemble.dependsOn assembleWeb
