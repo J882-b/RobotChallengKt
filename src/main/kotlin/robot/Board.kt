@@ -1,5 +1,6 @@
 package robot
 
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLImageElement
 import kotlin.browser.document
 
@@ -95,21 +96,20 @@ import kotlin.browser.document
  */
 class Board {
     val tanks: MutableList<Tank> = mutableListOf()
-    private val htmlDiv = document.getElementById("gameDiv")
+    internal val htmlDiv = document.getElementById("gameDiv") as HTMLDivElement
     private val dimension = Dimension(20, 20)
     private var laser = Laser(this)
 
     constructor() {
-        htmlDiv.asDynamic().style.width = "400px"
-        htmlDiv.asDynamic().style.height = "400px"
-        htmlDiv.asDynamic().style.border = "black 5px solid"
-        htmlDiv.asDynamic().style.position = "relative"
+        htmlDiv.style.width = "400px"
+        htmlDiv.style.height = "400px"
+        htmlDiv.style.border = "black 5px solid"
+        htmlDiv.style.position = "relative"
 
-    path2image("images/game_bg.png", { image : HTMLImageElement ->
+    path2image("images/game_bg.png", {image ->
             htmlDiv!!.appendChild(image)
             image.style.position = "absolute"
-            image.style.zIndex = "1"
-        })
+            image.style.zIndex = "1"})
     }
 
     fun addTank(tank : Tank) {

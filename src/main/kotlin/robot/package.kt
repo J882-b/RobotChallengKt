@@ -4,11 +4,9 @@ import org.w3c.dom.HTMLImageElement
 import kotlin.browser.document
 import kotlin.js.Math
 
-class Main {
-    fun main(args: Array<String>) {
-        println("Hello console!")
-        Game().start()
-    }
+fun main(args: Array<String>) {
+    println("Hello console!")
+    Game().start()
 }
 
 fun <E> MutableList<E>.shift(): E? {
@@ -17,6 +15,10 @@ fun <E> MutableList<E>.shift(): E? {
     this.removeAt(0)
     return result
 }
+
+val tankImagePaths = listOf( "images/tank_blue.png", "images/tank_brown.png",
+        "images/tank_coral.png", "images/tank_cyan.png", "images/tank_gold.png",
+        "images/tank_green.png", "images/tank_indigo.png", "images/tank_red.png")
 
 fun random(n : Int): Int {
     // returns an integer in the range {0, n-1}
