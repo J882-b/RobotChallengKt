@@ -56,7 +56,7 @@ import robot.strategy.Strategy
     Tank.prototype.move = function(board) {
         var move = this.strategy.getNextMove(new Input(this, board));
         switch (move.name) {
-        case Forward.name:
+        case FORWARD.name:
             var newPoint = this.point.withOffset(this.direction);
             if (board.validPoint(newPoint) && board.availablePoint(newPoint)) {
                 this.oldPoint = this.point;
@@ -65,18 +65,18 @@ import robot.strategy.Strategy
                 // blocked
             }
             break;
-        case TurnLeft.name:
+        case TURN_LEFT.name:
             this.direction = this.direction.counterClockwise();
             this.rotateAngle -= 90;
             break;
-        case TurnRight.name:
+        case TURN_RIGHT.name:
             this.direction = this.direction.clockwise();
             this.rotateAngle += 90;
             break;
-        case Fire.name:
+        case FIRE.name:
             board.fire(this);
             break;
-        case Wait.name:
+        case WAIT.name:
             break;
         }
         this.updateTransform();
@@ -111,10 +111,10 @@ class Tank {
     var hits: Int = 0
     var frags: Int = 0
     var point: Point
-    var direction = Direction.random()
+    var direction = Direction.NORTH.random()
     val strategy: Strategy
     private var oldPoint: Point = Point(0, 0)
-    val hitDirection = Direction
+    var hitDirection: Direction = Direction.NORTH
     val imageId = tankImagePaths.shift()!!
     lateinit var image: HTMLImageElement
     lateinit var hitImage : HTMLImageElement
@@ -159,7 +159,7 @@ class Tank {
     fun move(board: Board) {
         val move = strategy.getNextMove(Input(this, board))
         when(move) {
-            Forward -> {
+            FORWARD -> {
                 val newPoint = point.withOffset(direction)
                 if (board.validPoint(newPoint) && board.availablePoint(newPoint)) {
                     oldPoint = point
@@ -168,18 +168,18 @@ class Tank {
                     // blocked
                 }
             }
-            TurnLeft -> {
+            TURN_LEFT -> {
                 direction = direction.counterClockwise()
                 rotateAngle -= 90
             }
-            TurnRight -> {
+            TURN_RIGHT -> {
                 direction = direction.clockwise()
                     this.rotateAngle += 90
             }
-            Fire -> {
+            FIRE -> {
                 board.fire(this)
             }
-            Wait -> {}
+            WAIT -> {}
         }
         updateTransform()
     }

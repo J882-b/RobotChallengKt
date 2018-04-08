@@ -1,7 +1,6 @@
 package robot
 
 import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLImageElement
 import kotlin.browser.document
 
 /*

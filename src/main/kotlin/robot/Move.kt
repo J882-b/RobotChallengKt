@@ -56,6 +56,10 @@ function Move() {
 
  */
 enum class Move {
-    Fire, TurnLeft, Forward, TurnRight, Wait
+    FIRE, TURN_LEFT, FORWARD, TURN_RIGHT, WAIT;
+
+    fun random(): Move {
+        return Move.values()[random(Move.values().size)]
+    }
 }
 

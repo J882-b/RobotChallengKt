@@ -30,7 +30,3 @@ fun path2image(path: String, function: (HTMLImageElement) -> Unit) {
     image.asDynamic().src = path
     image.asDynamic().onload = function(image)
 }
-
-fun randomMove(): Move {
-    return Move.values()[random(Move.values().size)]
-}
