@@ -120,7 +120,7 @@ class Board {
         this.laser = laser
     }
 
-    private fun availablePoint(point : Point): Boolean {
+    fun availablePoint(point : Point): Boolean {
         for (i in 0 .. tanks.size) {
             if (tanks[i].point == point) {
                 return false
@@ -137,7 +137,7 @@ class Board {
         return point
     }
 
-    private fun validPoint (point : Point): Boolean {
+    fun validPoint (point : Point): Boolean {
         if (point.x in 0..19 && point.y in 0..19) {
             return true
         }
