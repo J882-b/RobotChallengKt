@@ -1,5 +1,6 @@
 package robot
 
+import robot.strategy.*
 import kotlin.browser.window
 
 /*
@@ -47,15 +48,14 @@ import kotlin.browser.window
  */
 class Game {
     private val board = Board()
-    private val strategies = listOf(Spinner(), Derp(), Random(), Random(), Random(), Random(), Random(), FireFire())
+    private val strategies: List<Strategy> =
+            listOf(Spinner(), Derp(), Random(), Random(), Random(), Random(), Random(), FireFire())
     private val score: Score
     private var round = 0
     private var nextToMoveQueue = mutableListOf<Tank>()
 
     constructor() {
-        for (strategy in strategies) {
-            Tank(board, strategy)
-        }
+        strategies.forEach {strategy -> Tank(board, strategy)}
         score = Score(board.tanks.size)
     }
 
@@ -79,7 +79,7 @@ class Game {
         if (!winner) {
             var tank = nextToMoveQueue.shift()
 
-            if (tank.isAlive()) {
+            if (tank?.isAlive() == true) {
                 tank.move(board)
             }
             window.setTimeout({nextMove()}, 200)
@@ -88,4 +88,11 @@ class Game {
             window.alert(alertMessage)
         }
     }
+}
+
+private fun <E> MutableList<E>.shift(): E? {
+    if (this.size == 0) return null
+    val result = this[0]
+    this.removeAt(0)
+    return result
 }
