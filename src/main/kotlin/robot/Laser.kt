@@ -34,7 +34,7 @@ class Laser {
     private val laserImages = mutableListOf<HTMLImageElement>()
 
     constructor(board: Board) {
-        for (i in 0 .. Tank.fireRange()) {
+        for (i in 0 .. Tank.fireRange) {
             path2image(laserPath, {image ->
                 laserImages[i] = image
                 board.htmlDiv.appendChild(image)
@@ -45,9 +45,8 @@ class Laser {
     }
 
     fun set(i: Int, point: Point, direction: Direction) {
-        var image = laserImages[i]
-        image.style.transform =
-                "translate(' + point.x * 20 + 'px, ' + point.y * 20 + 'px) rotate(${direction.angle}deg)"
+        val image = laserImages[i]
+        image.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${direction.angle}deg)"
         image.style.display = "block"
     }
 

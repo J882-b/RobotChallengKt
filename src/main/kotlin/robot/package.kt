@@ -22,7 +22,7 @@ val tankImagePaths = mutableListOf( "images/tank_blue.png", "images/tank_brown.p
 
 fun random(n : Int): Int {
     // returns an integer in the range {0, n-1}
-    return Math.floor(Math.random() * n);
+    return Math.floor(Math.random() * n)
 }
 
 fun path2image(path: String, function: (HTMLImageElement) -> Unit) {

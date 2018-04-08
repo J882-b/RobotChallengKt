@@ -156,7 +156,7 @@ class Board {
 
     fun fire(tank : Tank) {
         val tankPoint = tank.point
-        for (i in 0 .. Tank.fireRange()) {
+        for (i in 0 .. Tank.fireRange) {
             val firePoint = tankPoint.withOffset(tank.direction)
             if (!validPoint(firePoint)) {
                 break

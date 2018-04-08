@@ -66,7 +66,6 @@ class Score {
     private val roundNo = document.createTextNode("0")
 
     constructor(players: Int) {
-
         for (i in 0 .. players) {
             val tr = document.createElement("tr")
             for (j in 0 .. headerLength) {
@@ -75,12 +74,12 @@ class Score {
                 if (i == 0) {
                     tag = "th"
                 }
-                var tx = document.createElement(tag)
+                val tx = document.createElement(tag)
                 if (j == 0 && i != 0) {
                     cell = document.createElement("img")
                 } else {
                     var text = "."
-                    if (i === 0) {
+                    if (i == 0) {
                         text = headers.shift()!!
                     }
                     cell = document.createTextNode(text)

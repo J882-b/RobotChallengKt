@@ -105,7 +105,6 @@ import robot.strategy.Strategy
     };
  */
 class Tank {
-    val fireRange = 10
     private val maxEnergy = 5
     var energy: Int = maxEnergy
     var hits: Int = 0
@@ -143,7 +142,6 @@ class Tank {
         updateTransform()
 
         board.addTank(this)
-
     }
 
     private fun updateTransform() {
@@ -174,7 +172,7 @@ class Tank {
             }
             TURN_RIGHT -> {
                 direction = direction.clockwise()
-                    this.rotateAngle += 90
+                rotateAngle += 90
             }
             FIRE -> {
                 board.fire(this)
@@ -206,12 +204,10 @@ class Tank {
     }
 
     fun isAlive(): Boolean {
-        return 0 < energy;
+        return 0 < energy
     }
 
     companion object {
-        fun fireRange(): Int {
-            return 10
-        }
+        const val fireRange = 10
     }
 }
