@@ -82,7 +82,7 @@ class Game {
             if (tank.isAlive()) {
                 tank.move(board)
             }
-            window.setTimeout({nextToMoveQueue}, 200)
+            window.setTimeout({nextMove()}, 200)
         } else {
             val alertMessage = "The winner is ${nextToMoveQueue[0].strategy.name}"
             window.alert(alertMessage)
