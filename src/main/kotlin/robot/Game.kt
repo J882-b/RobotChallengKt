@@ -89,10 +89,3 @@ class Game {
         }
     }
 }
-
-private fun <E> MutableList<E>.shift(): E? {
-    if (this.size == 0) return null
-    val result = this[0]
-    this.removeAt(0)
-    return result
-}
