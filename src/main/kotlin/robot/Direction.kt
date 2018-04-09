@@ -123,7 +123,7 @@ enum class  Direction(val angle: Int, val x: Byte, val y: Byte) {
     abstract fun counterClockwise(): Direction
     abstract fun clockwise(): Direction
 
-    fun random(): Direction {
-        return Direction.values()[random(Direction.values().size)]
+    companion object {
+        fun random() = Direction.values()[random(Direction.values().size)]
     }
 }

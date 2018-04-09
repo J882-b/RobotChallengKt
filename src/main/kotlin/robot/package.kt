@@ -1,6 +1,7 @@
 package robot
 
 import org.w3c.dom.HTMLImageElement
+import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.js.Math
 
@@ -27,6 +28,6 @@ fun random(n : Int): Int {
 
 fun path2image(path: String, function: (HTMLImageElement) -> Unit) {
     val image = document.createElement("img") as HTMLImageElement
-    image.asDynamic().src = path
-    image.asDynamic().onload = function(image)
+    image.src = path
+    image.onload = {event: Event ->  if (event.type == "load") function(image) else console.log(event.type)}
 }

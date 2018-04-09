@@ -55,6 +55,7 @@ class Game {
     private var nextToMoveQueue = mutableListOf<Tank>()
 
     constructor() {
+        console.log("Game constructor")
         strategies.forEach {strategy -> Tank(board, strategy)}
         score = Score(board.tanks.size)
     }

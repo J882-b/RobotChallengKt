@@ -1,5 +1,3 @@
 package robot
 
-class Dimension(width: Int, height: Int) {
-
-}
+class Dimension(val width: Int, val height: Int)

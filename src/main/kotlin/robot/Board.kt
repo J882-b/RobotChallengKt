@@ -6,16 +6,16 @@ import kotlin.browser.document
 /*
    function Board() {
         var self = this;
-        this.htmlDiv = document.getElementById('gameDiv');
+        this.gameDiv = document.getElementById('gameDiv');
         this.dimension = new Dimension(20, 20);
         this.tanks = [];
-        this.htmlDiv.style.width = "400px";
-        this.htmlDiv.style.height = "400px";
-        this.htmlDiv.style.border = "black 5px solid";
-        this.htmlDiv.style.position = "relative";
+        this.gameDiv.style.width = "400px";
+        this.gameDiv.style.height = "400px";
+        this.gameDiv.style.border = "black 5px solid";
+        this.gameDiv.style.position = "relative";
 
         path2image('images/game_bg.png', function(image) {
-            self.htmlDiv.appendChild(image);
+            self.gameDiv.appendChild(image);
             image.style.position = "absolute";
             image.style.zIndex = "1";
         });
@@ -95,32 +95,31 @@ import kotlin.browser.document
  */
 class Board {
     val tanks: MutableList<Tank> = mutableListOf()
-    internal val htmlDiv = document.getElementById("gameDiv") as HTMLDivElement
-    private val dimension = Dimension(20, 20)
+    internal val gameDiv = document.getElementById("gameDiv") as HTMLDivElement
+    internal val dimension = Dimension(20, 20)
     private var laser = Laser(this)
 
     constructor() {
-        htmlDiv.style.width = "400px"
-        htmlDiv.style.height = "400px"
-        htmlDiv.style.border = "black 5px solid"
-        htmlDiv.style.position = "relative"
+        console.log("Board constructor()")
+        gameDiv.style.width = "400px"
+        gameDiv.style.height = "400px"
+        gameDiv.style.border = "black 5px solid"
+        gameDiv.style.position = "relative"
 
     path2image("images/game_bg.png", {image ->
-            htmlDiv!!.appendChild(image)
+            gameDiv.appendChild(image)
             image.style.position = "absolute"
             image.style.zIndex = "1"})
     }
 
     fun addTank(tank : Tank) {
+        console.log("Board addTank()")
         tanks.add(tank)
     }
 
-    fun setLaser(laser : Laser) {
-        this.laser = laser
-    }
-
     fun availablePoint(point : Point): Boolean {
-        for (i in 0 .. tanks.size) {
+        console.log("Board availablePoint()")
+        for (i in 0..(tanks.size - 1)) {
             if (tanks[i].point == point) {
                 return false
             }
@@ -137,13 +136,15 @@ class Board {
     }
 
     fun validPoint (point : Point): Boolean {
-        if (point.x in 0..19 && point.y in 0..19) {
+        console.log("Board validPoint()")
+        if (point.x in 0..(dimension.width - 1) && point.y in 0..(dimension.height - 1)) {
             return true
         }
         return false
     }
 
     fun getAliveTanksInRandomOrder() : List<Tank> {
+        console.log("Board getAliveTanksInRandomOrder()")
         val result : MutableList<Tank> = mutableListOf()
         // TODO: Add the random
         this.tanks.forEach {tank ->
@@ -155,8 +156,9 @@ class Board {
     }
 
     fun fire(tank : Tank) {
+        console.log("Board fire()")
         val tankPoint = tank.point
-        for (i in 0 .. Tank.fireRange) {
+        for (i in 0..(Tank.fireRange - 1)) {
             val firePoint = tankPoint.withOffset(tank.direction)
             if (!validPoint(firePoint)) {
                 break
@@ -182,6 +184,7 @@ class Board {
     }
 
     fun moveReset() {
+        console.log("Board moveReset()")
         laser.reset()
         tanks.forEach { tank -> tank.hitReset() }
     }

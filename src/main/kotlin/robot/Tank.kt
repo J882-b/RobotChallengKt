@@ -3,6 +3,7 @@ package robot
 import org.w3c.dom.HTMLImageElement
 import robot.Move.*
 import robot.strategy.Strategy
+import kotlin.browser.window
 
 /*
     function Tank(board, strategy) {
@@ -22,7 +23,7 @@ import robot.strategy.Strategy
             image.style.position = "absolute";
             image.style.zIndex = "2";
             image.className = 'tank';
-            board.htmlDiv.appendChild(image);
+            board.gameDiv.appendChild(image);
             self.image = image;
         });
 
@@ -31,7 +32,7 @@ import robot.strategy.Strategy
             image.style.position = "absolute";
             image.style.zIndex = "3";
             image.style.display = "none";
-            board.htmlDiv.appendChild(image);
+            board.gameDiv.appendChild(image);
             self.hitImage = image;
         });
 
@@ -110,16 +111,17 @@ class Tank {
     var hits: Int = 0
     var frags: Int = 0
     var point: Point
-    var direction = Direction.NORTH.random()
+    var direction = Direction.random()
     val strategy: Strategy
     private var oldPoint: Point = Point(0, 0)
     var hitDirection: Direction = Direction.NORTH
     val imageId = tankImagePaths.shift()!!
-    lateinit var image: HTMLImageElement
-    lateinit var hitImage : HTMLImageElement
+    var image: HTMLImageElement? = null
+    var hitImage : HTMLImageElement? = null
     var rotateAngle = direction.angle
 
     constructor(board: Board, strategy: Strategy) {
+        console.log("Tank constructor()")
         this.strategy = strategy
         point = board.randomPoint()
 
@@ -127,15 +129,15 @@ class Tank {
             image.style.position = "absolute"
             image.style.zIndex = "2"
             image.className = "tank"
-            board.htmlDiv.appendChild(image)
+            board.gameDiv.appendChild(image)
             this.image = image
         })
 
         path2image("images/hit.png", {image ->
             image.style.position = "absolute"
             image.style.zIndex = "3"
-            image.style.display = "none"
-            board.htmlDiv.appendChild(image)
+            //image.style.display = "none"
+            board.gameDiv.appendChild(image)
             hitImage = image
         })
 
@@ -145,17 +147,27 @@ class Tank {
     }
 
     private fun updateTransform() {
-        image.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
-        hitImage.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px)"
+        if (image == null) {
+            console.log("Tank updateTransform() image == null")
+        }
+        if (hitImage == null) {
+            console.log("Tank updateTransform() hitImage == null")
+        }
+        if (image == null || hitImage == null) {
+            return
+        }
+        image!!.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
+        hitImage!!.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px)"
     }
-
 
     override fun toString(): String {
         return "$imageId @ x=${point.x}, y=${point.y}, ${direction.name}, energy=$energy"
     }
 
     fun move(board: Board) {
+        console.log("Tank move()")
         val move = strategy.getNextMove(Input(this, board))
+        console.log("Tank move() move=$move")
         when(move) {
             FORWARD -> {
                 val newPoint = point.withOffset(direction)
@@ -185,7 +197,11 @@ class Tank {
     fun hit(direction: Direction) {
         if (0 < energy) {
             energy -= 1
-            hitImage.style.display = "block"
+            if (hitImage == null) {
+                console.log("Tank hit() hitImage == null")
+            } else {
+                hitImage!!.style.display = "block"
+            }
             if (energy == 0) {
                 // frag
             } else {
@@ -198,8 +214,13 @@ class Tank {
     }
 
     fun hitReset() {
+        console.log("Tank hitReset")
         if (isAlive()) {
-            hitImage.style.display = "none"
+            if (hitImage == null) {
+                console.log("Tank hitReset() hitImage == null")
+            } else {
+                hitImage!!.style.display = "none"
+            }
         }
     }
 

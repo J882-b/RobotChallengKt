@@ -10,7 +10,7 @@ import org.w3c.dom.HTMLImageElement
         for ( var i = 0; i < Tank.prototype.fireRange; i += 1) {
             path2image(laserPath, function(image) {
                 self.laserImages[i] = image;
-                board.htmlDiv.appendChild(image);
+                board.gameDiv.appendChild(image);
                 image.style.position = "absolute";
                 image.style.zIndex = "2";
                 image.style.display = "none";
@@ -34,17 +34,22 @@ class Laser {
     private val laserImages = mutableListOf<HTMLImageElement>()
 
     constructor(board: Board) {
-        for (i in 0 .. Tank.fireRange) {
+        console.log("Laser constructor")
+        for (i in 0..(Tank.fireRange - 1)) {
             path2image(laserPath, {image ->
                 laserImages[i] = image
-                board.htmlDiv.appendChild(image)
+                board.gameDiv.appendChild(image)
                 image.style.position = "absolute"
-                image.style.zIndex = "2"
-                image.style.display = "none"})
+                image.style.zIndex = "6"})
         }
     }
 
     fun set(i: Int, point: Point, direction: Direction) {
+        console.log("Laser set()")
+        if (laserImages.size <= i) {
+            console.log("Laser laserImages, size=${laserImages.size}, i=$i")
+            return
+        }
         val image = laserImages[i]
         image.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${direction.angle}deg)"
         image.style.display = "block"

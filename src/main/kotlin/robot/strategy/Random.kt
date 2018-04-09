@@ -3,11 +3,23 @@ package robot.strategy
 import robot.Input
 import robot.Move
 
+/*
+    function Random() {
+        this.name = 'Random';
+        this.author = 'Martin';
+        this.getNextMove = function() {
+            return Move.prototype.random();
+        };
+    }
+    Random.prototype = new Strategy();
+    Random.prototype.constructor = Random;
+ */
 class Random : Strategy() {
     override val name = "Random"
     override val author = "Martin"
 
     override fun getNextMove(input: Input): Move {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        console.log("Random getNextMove()")
+        return Move.random()
     }
 }

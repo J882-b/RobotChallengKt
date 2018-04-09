@@ -5,7 +5,7 @@ import kotlin.browser.document
 
 /*
     function Score(players) {
-        this.htmlDiv = document.getElementById('scoreDiv');
+        this.scoreDiv = document.getElementById('scoreDiv');
         var table = document.createElement("table");
         var headers = [ 'Image', 'Name', 'Author', 'Energy', 'Hits', 'Frags' ];
         var headerLength = headers.length;
@@ -33,15 +33,15 @@ import kotlin.browser.document
             table.appendChild(tr);
         }
         table.border = "1";
-        this.htmlDiv.appendChild(table);
+        this.scoreDiv.appendChild(table);
         var roundText = document.createTextNode('Round: ');
         var roundNo = document.createTextNode('0');
-        this.htmlDiv.appendChild(roundText);
-        this.htmlDiv.appendChild(roundNo);
+        this.scoreDiv.appendChild(roundText);
+        this.scoreDiv.appendChild(roundNo);
 
     }
     Score.prototype.update = function(round, tanks) {
-        var trNodes = this.htmlDiv.childNodes[0].childNodes;
+        var trNodes = this.scoreDiv.childNodes[0].childNodes;
         var row = 1;
         tanks.forEach(function(tank) {
             if (round === 1) {
@@ -54,21 +54,22 @@ import kotlin.browser.document
             trNodes[row].childNodes[5].childNodes[0].data = tank.frags;
             row += 1;
         });
-        this.htmlDiv.childNodes[2].data = round;
+        this.scoreDiv.childNodes[2].data = round;
     };
  */
 class Score {
-    private val htmlDiv = document.getElementById("scoreDiv")
-    private val table = document.createElement("table")
+    private val scoreDiv = document.getElementById("scoreDiv") as HTMLDivElement
+    private val table = document.createElement("table") as HTMLTableElement
     private val headers = mutableListOf("Image", "Name", "Author", "Energy", "Hits", "Frags")
     private val headerLength = headers.size
     private val roundText = document.createTextNode("Round: ")
     private val roundNo = document.createTextNode("0")
 
     constructor(players: Int) {
-        for (i in 0 .. players) {
+        console.log("Score constructor()")
+        for (i in 0..players) {
             val tr = document.createElement("tr")
-            for (j in 0 .. headerLength) {
+            for (j in 0..(headerLength - 1)) {
                 var cell : Node
                 var tag = "td"
                 if (i == 0) {
@@ -90,13 +91,14 @@ class Score {
             table.appendChild(tr)
         }
         table.asDynamic().border = "1"
-        htmlDiv!!.appendChild(table)
-        htmlDiv.appendChild(roundText)
-        htmlDiv.appendChild(roundNo)
+        scoreDiv.appendChild(table)
+        scoreDiv.appendChild(roundText)
+        scoreDiv.appendChild(roundNo)
     }
 
     fun update(round: Int, tanks: List<Tank>) {
-        val trNodes = htmlDiv!!.childNodes[0]!!.childNodes
+        console.log("Score update")
+        val trNodes = scoreDiv.childNodes[0]!!.childNodes
         var row = 1
         tanks.forEach { tank ->
             if (round == 1) {
@@ -109,7 +111,7 @@ class Score {
             trNodes[row]!!.childNodes[5]!!.childNodes[0].asDynamic().data = tank.frags
             row += 1
         }
-        htmlDiv.childNodes[2].asDynamic().data = round
+        scoreDiv.childNodes[2].asDynamic().data = round
     }
 }
 
