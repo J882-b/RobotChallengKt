@@ -31,16 +31,20 @@ import org.w3c.dom.HTMLImageElement
  */
 class Laser {
     private val laserPath = "images/laser.png"
-    private val laserImages = mutableListOf<HTMLImageElement>()
+    var laserImages = mutableListOf<HTMLImageElement?>()
 
     constructor(board: Board) {
         console.log("Laser constructor")
         for (i in 0..(Tank.fireRange - 1)) {
+            laserImages.add(null)
+        }
+        for (i in 0..(Tank.fireRange - 1)) {
             path2image(laserPath, {image ->
-                laserImages[i] = image
                 board.gameDiv.appendChild(image)
                 image.style.position = "absolute"
-                image.style.zIndex = "6"})
+                image.style.zIndex = "2"
+                laserImages[i] = image
+                console.log("Laser laserImages path2image callback, i=$i, $laserImages")})
         }
     }
 
@@ -51,11 +55,24 @@ class Laser {
             return
         }
         val image = laserImages[i]
-        image.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${direction.angle}deg)"
+        if (image == null) {
+            console.log("Laser ser(), i=$i, size=${laserImages.size} image == null")
+            return
+        }
+
+        val laserTransform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${direction.angle}deg)"
+        console.log(laserTransform)
+        image.style.transform = laserTransform
         image.style.display = "block"
     }
 
     fun reset() {
-        laserImages.forEach {image -> image.style.display = "none"}
+        laserImages.forEach { image ->
+            if (image == null) {
+                console.log("Laser reset() laserImage x == null")
+            } else {
+                image.style.display = "none"
+            }
+        }
     }
 }

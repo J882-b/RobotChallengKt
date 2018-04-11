@@ -2,6 +2,7 @@ package robot
 
 import org.w3c.dom.HTMLDivElement
 import kotlin.browser.document
+import kotlin.browser.window
 
 /*
    function Board() {
@@ -97,7 +98,7 @@ class Board {
     val tanks: MutableList<Tank> = mutableListOf()
     internal val gameDiv = document.getElementById("gameDiv") as HTMLDivElement
     internal val dimension = Dimension(20, 20)
-    private var laser = Laser(this)
+    private var laser: Laser? = null
 
     constructor() {
         console.log("Board constructor()")
@@ -106,10 +107,16 @@ class Board {
         gameDiv.style.border = "black 5px solid"
         gameDiv.style.position = "relative"
 
-    path2image("images/game_bg.png", {image ->
+        path2image("images/game_bg.png", {image ->
             gameDiv.appendChild(image)
             image.style.position = "absolute"
             image.style.zIndex = "1"})
+
+        window.setTimeout({serLaser(Laser(this))}, 100)
+    }
+
+    private fun serLaser(laser: Laser) {
+        this.laser = laser
     }
 
     fun addTank(tank : Tank) {
@@ -157,15 +164,15 @@ class Board {
 
     fun fire(tank : Tank) {
         console.log("Board fire()")
-        val tankPoint = tank.point
+        var point = tank.point
         for (i in 0..(Tank.fireRange - 1)) {
-            val firePoint = tankPoint.withOffset(tank.direction)
-            if (!validPoint(firePoint)) {
+            point = point.withOffset(tank.direction)
+            if (!validPoint(point)) {
                 break
-            } else if (availablePoint(firePoint)) {
-                laser.set(i, firePoint, tank.direction)
+            } else if (availablePoint(point)) {
+                laser?.set(i, point, tank.direction)
             } else {
-                val otherTank = tankAt(firePoint)
+                val otherTank = tankAt(point)
                 val aliveBeforeHit = otherTank.isAlive()
                 otherTank.hit(tank.direction.opposite())
                 val aliveAfterHit = otherTank.isAlive()
@@ -185,7 +192,7 @@ class Board {
 
     fun moveReset() {
         console.log("Board moveReset()")
-        laser.reset()
+        laser?.reset()
         tanks.forEach { tank -> tank.hitReset() }
     }
 }

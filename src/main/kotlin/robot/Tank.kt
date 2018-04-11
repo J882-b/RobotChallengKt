@@ -156,8 +156,12 @@ class Tank {
         if (image == null || hitImage == null) {
             return
         }
-        image!!.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
-        hitImage!!.style.transform = "translate(${point.x * 20}px, ${point.y * 20}px)"
+        val tankTransform =  "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
+        //console.log(tankTransform)
+        image!!.style.transform = tankTransform
+        val hitTransform = "translate(${point.x * 20}px, ${point.y * 20}px)"
+        //console.log(hitTransform)
+        hitImage!!.style.transform = hitTransform
     }
 
     override fun toString(): String {
