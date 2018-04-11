@@ -6,7 +6,6 @@ import kotlin.browser.document
 import kotlin.js.Math
 
 fun main(args: Array<String>) {
-    println("Hello console!")
     Game().start()
 }
 

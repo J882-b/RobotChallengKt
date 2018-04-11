@@ -3,49 +3,6 @@ package robot
 import robot.strategy.*
 import kotlin.browser.window
 
-/*
-    function Game() {
-        var board = new Board();
-
-        [ new Spinner(), new Derp(), new Random(), new Random(), new Random(), new Random(),
-                new Random(), new FireFire() ].forEach(function(strategy) {
-            new Tank(board, strategy);
-        });
-
-        var score = new Score(board.tanks.length);
-
-        var round = 0;
-        var nextToMoveQueue = [];
-        var nextMove = function() {
-            var winner = false;
-            if (nextToMoveQueue.length === 0) {
-                round += 1;
-                nextToMoveQueue = nextToMoveQueue.concat(board.getAliveTanksInRandomOrder());
-                if (nextToMoveQueue.length === 1) {
-                    winner = true;
-                }
-            }
-            score.update(round, board.tanks);
-            board.moveReset();
-            if (!winner) {
-                var tank = nextToMoveQueue.shift();
-
-                if (tank.isAlive()) {
-                    tank.move(board);
-                }
-                setTimeout(function() {
-                    nextMove();
-                }, 200);
-            } else {
-                alert('The winner is ' + nextToMoveQueue[0].strategy.name);
-            }
-        };
-        this.start = function() {
-            console.log('start the game');
-            nextMove();
-        };
-    }
- */
 class Game {
     private val board = Board()
     private val strategies: List<Strategy> =
@@ -55,13 +12,11 @@ class Game {
     private var nextToMoveQueue = mutableListOf<Tank>()
 
     constructor() {
-        console.log("Game constructor")
         strategies.forEach {strategy -> Tank(board, strategy)}
         score = Score(board.tanks.size)
     }
 
     fun start() {
-        console.log("start the game")
         nextMove()
     }
 
@@ -83,7 +38,7 @@ class Game {
             if (tank?.isAlive() == true) {
                 tank.move(board)
             }
-            window.setTimeout({nextMove()}, 200)
+            window.setTimeout({nextMove()}, 100)
         } else {
             val alertMessage = "The winner is ${nextToMoveQueue[0].strategy.name}"
             window.alert(alertMessage)

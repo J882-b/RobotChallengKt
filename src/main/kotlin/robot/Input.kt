@@ -1,30 +1,5 @@
 package robot
-/*
- function Input(tank, board) {
-        this.playfieldDimension = new Dimension(board.dimension.width, board.dimension.height);
-        this.ownStatus = new Status(board.tanks.filter(function(t) {
-            return t.point.equals(tank.point);
-        })[0]);
-        this.opponentStatus = board.tanks.filter(function(t) {
-            return !t.point.equals(tank.point);
-        }).map(function(t) {
-            return new Status(t);
-        });
-    }
-    Input.prototype.getPlayfieldSize = function() {
-        return this.playfieldDimension;
-    };
-    Input.prototype.getFireRange = function() {
-        return Tank.prototype.fireRange;
-    };
-    Input.prototype.getOwnStatus = function() {
-        return this.ownStatus;
-    };
-    Input.prototype.getOpponentStatus = function() {
-        return this.opponentStatus;
-    };
 
- */
 class Input {
     private val playfieldDimension: Dimension
     private val ownStatus: Status
