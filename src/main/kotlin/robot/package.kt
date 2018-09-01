@@ -3,7 +3,10 @@ package robot
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
-import kotlin.js.Math
+import kotlin.math.floor
+// They better not remove Math without any replacement for random.
+import kotlin.js.Math.random as rand
+
 
 fun main(args: Array<String>) {
     Game().start()
@@ -22,7 +25,7 @@ val tankImagePaths = mutableListOf( "images/tank_blue.png", "images/tank_brown.p
 
 fun random(n : Int): Int {
     // returns an integer in the range {0, n-1}
-    return Math.floor(Math.random() * n)
+    return floor(rand() * n).toInt()
 }
 
 fun path2image(path: String, function: (HTMLImageElement) -> Unit) {

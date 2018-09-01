@@ -20,6 +20,7 @@ class Game {
         nextMove()
     }
 
+    // TODO: Performance bug when only two tanks left.
     private fun nextMove() {
         var winner = false
 
