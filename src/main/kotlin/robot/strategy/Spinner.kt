@@ -3,9 +3,7 @@ package robot.strategy
 import robot.Input
 import robot.Move
 
-class Spinner : Strategy() {
-    override val name = "Spinner"
-    override val author = "Martin"
+class Spinner : Strategy("Spinner", "Martin") {
     private var shot = false
 
     override fun getNextMove(input: Input): Move {

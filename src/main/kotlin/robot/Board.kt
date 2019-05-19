@@ -10,30 +10,29 @@ class Board {
     internal val dimension = Dimension(20, 20)
     private var laser: Laser? = null
 
-    constructor() {
+    init {
         gameDiv.style.width = "400px"
         gameDiv.style.height = "400px"
         gameDiv.style.border = "black 5px solid"
         gameDiv.style.position = "relative"
-
-        path2image("images/game_bg.png", {image ->
+        path2image("images/game_bg.png") { image ->
             gameDiv.appendChild(image)
             image.style.position = "absolute"
-            image.style.zIndex = "1"})
-
-        window.setTimeout({serLaser(Laser(this))}, 100)
+            image.style.zIndex = "1"
+        }
+        window.setTimeout({ serLaser(Laser(this)) }, 100)
     }
 
     private fun serLaser(laser: Laser) {
         this.laser = laser
     }
 
-    fun addTank(tank : Tank) {
+    fun addTank(tank: Tank) {
         tanks.add(tank)
     }
 
-    fun availablePoint(point : Point): Boolean {
-        for (i in 0..(tanks.size - 1)) {
+    fun availablePoint(point: Point): Boolean {
+        for (i in 0 until tanks.size) {
             if (tanks[i].point == point) {
                 return false
             }
@@ -42,24 +41,24 @@ class Board {
     }
 
     fun randomPoint(): Point {
-        var point : Point
+        var point: Point
         do {
             point = Point.random(dimension)
         } while (!availablePoint(point))
         return point
     }
 
-    fun validPoint (point : Point): Boolean {
-        if (point.x in 0..(dimension.width - 1) && point.y in 0..(dimension.height - 1)) {
+    fun validPoint(point: Point): Boolean {
+        if (point.x in 0 until dimension.width && point.y in 0 until dimension.height) {
             return true
         }
         return false
     }
 
-    fun getAliveTanksInRandomOrder() : List<Tank> {
-        val result : MutableList<Tank> = mutableListOf()
+    fun getAliveTanksInRandomOrder(): List<Tank> {
+        val result: MutableList<Tank> = mutableListOf()
         // TODO: Add the random
-        this.tanks.forEach {tank ->
+        this.tanks.forEach { tank ->
             if (tank.isAlive()) {
                 result.add(tank)
             }
@@ -67,9 +66,9 @@ class Board {
         return result
     }
 
-    fun fire(tank : Tank) {
+    fun fire(tank: Tank) {
         var point = tank.point
-        for (i in 0..(Tank.fireRange - 1)) {
+        for (i in 0 until Tank.fireRange) {
             point = point.withOffset(tank.direction)
             if (!validPoint(point)) {
                 break

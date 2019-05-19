@@ -6,13 +6,13 @@ import kotlin.browser.window
 class Game {
     private val board = Board()
     private val strategies: List<Strategy> =
-            listOf(Spinner(), Derp(), Random(), Random(), Random(), Random(), Random(), FireFire())
+            listOf(Spinner(), Dummy(), Slacker(), Random(), Random(), Random(), Random(), FireFire())
     private val score: Score
     private var round = 0
     private var nextToMoveQueue = mutableListOf<Tank>()
 
-    constructor() {
-        strategies.forEach {strategy -> Tank(board, strategy)}
+    init {
+        strategies.forEach { strategy -> Tank(board, strategy) }
         score = Score(board.tanks.size)
     }
 
@@ -20,7 +20,6 @@ class Game {
         nextMove()
     }
 
-    // TODO: Performance bug when only two tanks left.
     private fun nextMove() {
         var winner = false
 
@@ -34,12 +33,12 @@ class Game {
         score.update(round, board.tanks)
         board.moveReset()
         if (!winner) {
-            var tank = nextToMoveQueue.shift()
+            val tank = nextToMoveQueue.shift()
 
             if (tank?.isAlive() == true) {
                 tank.move(board)
             }
-            window.setTimeout({nextMove()}, 100)
+            window.setTimeout({ nextMove() }, 100)
         } else {
             val alertMessage = "The winner is ${nextToMoveQueue[0].strategy.name}"
             window.alert(alertMessage)

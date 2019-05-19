@@ -2,13 +2,12 @@ package robot.strategy
 
 import robot.*
 
-class FireFire : Strategy() {
-    override val name = "FireFire"
-    override val author = "JMH__"
+
+class FireFire : Strategy("FireFire", "JMH__") {
     private var width = 0
     private var height = 0
     private var fireRange = 0
-    private var myStatus : Status? = null
+    private var myStatus: Status? = null
     private var otherStatus = listOf<Status>()
     private var myLocation = Point(0, 0)
     private var myDirection = Direction.NORTH
@@ -19,31 +18,30 @@ class FireFire : Strategy() {
     override fun getNextMove(input: Input): Move {
         // var startTime = new Date().getTime()
         stateUpdate(input)
-        var visited = mutableListOf<Position>()
+        val visited = mutableListOf<Position>()
         visited.addAll(deadPositions)
         visited.addAll(alivePositions)
-        var move = findMoveToClosestFire(myPosition, alivePositions, visited)
         // var endTime = new Date().getTime()
         // console.log('Time in FireFire: ' + (endTime - startTime))
-        return move
+        return findMoveToClosestFire(myPosition, alivePositions, visited)
     }
 
-    fun stateUpdate(input: Input) {
-        width = input.getPlayfieldSize().width
-        height = input.getPlayfieldSize().height
-        fireRange = input.getFireRange()
-        myStatus = input.getOwnStatus()
-        otherStatus = input.getOpponentStatus()
-        myDirection = myStatus!!.getDirection()
-        myLocation = myStatus!!.getLocation()
+    private fun stateUpdate(input: Input) {
+        width = input.playfield.width
+        height = input.playfield.height
+        fireRange = input.fireRange
+        myStatus = input.ownStatus
+        otherStatus = input.opponentStatus
+        myDirection = myStatus!!.direction
+        myLocation = myStatus!!.location
         myPosition = Position(myLocation, myDirection)
         alivePositions.clear()
         deadPositions.clear()
-        otherStatus.forEach {s ->
-            if (s.isAlive()) {
-                alivePositions.addAll(positionList(s.getLocation()))
+        otherStatus.forEach { status ->
+            if (status.isAlive) {
+                alivePositions.addAll(positionList(status.location))
             } else {
-                deadPositions.addAll(positionList(s.getLocation()))
+                deadPositions.addAll(positionList(status.location))
             }
         }
     }
@@ -53,15 +51,15 @@ class FireFire : Strategy() {
         val queue = mutableListOf<Position>()
         queue.add(root)
         while (queue.size > 0) {
-            var cp = queue.shift()
+            val cp = queue.shift()
             visited.add(cp!!)
             if (cp.isFirePosition(search)) {
                 cp.moves.add(Move.FIRE)
                 return cp.moves[0]
             } else {
-                var newPositions =
-                        mutableListOf( cp.move(), cp.clockwise(), cp.counterClockwise())
-                for (i in 0..(newPositions.size - 1)) {
+                val newPositions =
+                        mutableListOf(cp.move(), cp.clockwise(), cp.counterClockwise())
+                for (i in 0 until newPositions.size) {
                     if (newPositions[i].isValid() && !visited.contains(newPositions[i])) {
                         queue.add(newPositions[i])
                     }
@@ -75,16 +73,7 @@ class FireFire : Strategy() {
             listOf(Position(point, Direction.EAST), Position(point, Direction.NORTH),
                     Position(point, Direction.SOUTH), Position(point, Direction.WEST))
 
-    inner class Position {
-        var moves = mutableListOf<Move>()
-        val point: Point
-        val direction: Direction
-
-        constructor(point: Point, direction: Direction, moves: MutableList<Move> = mutableListOf()) {
-            this.point = point
-            this.direction = direction
-            this.moves = moves
-        }
+    inner class Position(val point: Point, val direction: Direction, var moves: MutableList<Move> = mutableListOf()) {
 
         fun move(): Position {
             val moves = mutableListOf<Move>()
@@ -97,23 +86,23 @@ class FireFire : Strategy() {
             val moves = mutableListOf<Move>()
             moves.addAll(this.moves)
             moves.add(Move.TURN_RIGHT)
-            return Position(point, direction.clockwise(), moves);
+            return Position(point, direction.clockwise(), moves)
         }
 
         fun counterClockwise(): Position {
             val moves = mutableListOf<Move>()
             moves.addAll(this.moves)
-            moves.add(Move.TURN_LEFT);
+            moves.add(Move.TURN_LEFT)
             return Position(point, direction.counterClockwise(), moves)
         }
 
-        fun fire(): MutableList<Position> {
+        private fun fire(): MutableList<Position> {
             val positions = mutableListOf<Position>()
             var testInDeadPositions: Boolean
             for (i in 1..fireRange) {
-                var test = Position(point.withOffset(direction, i), direction)
+                val test = Position(point.withOffset(direction, i), direction)
                 testInDeadPositions = false
-                for (j in 0.. (deadPositions.size - 1)) {
+                for (j in 0 until deadPositions.size) {
                     if (deadPositions[j] == test) {
                         testInDeadPositions = true
                     }
@@ -128,10 +117,10 @@ class FireFire : Strategy() {
         }
 
         fun isFirePosition(search: MutableList<Position>): Boolean {
-            var possible = fire()
-            for(i in 0..(possible.size - 1)) {
+            val possible = fire()
+            for (i in 0 until possible.size) {
                 var possibleInSearch = false
-                for (j in 0..(search.size - 1)) {
+                for (j in 0 until search.size) {
                     if (possible[i] == search[j]) {
                         possibleInSearch = true
                     }
@@ -143,7 +132,7 @@ class FireFire : Strategy() {
             return false
         }
 
-        fun isValid() = point.x in 0..(width - 1) && point.y in 0..(height - 1)
+        fun isValid() = point.x in 0 until width && point.y in 0 until height
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -162,7 +151,5 @@ class FireFire : Strategy() {
             result = 31 * result + direction.hashCode()
             return result
         }
-
-
     }
 }

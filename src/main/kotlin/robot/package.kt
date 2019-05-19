@@ -4,11 +4,11 @@ import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.math.floor
-// They better not remove Math without any replacement for random.
+// TODO: Change to replacement when available.
 import kotlin.js.Math.random as rand
 
 
-fun main(args: Array<String>) {
+fun main() {
     Game().start()
 }
 

@@ -3,20 +3,21 @@ package robot
 import org.w3c.dom.HTMLImageElement
 
 
-class Laser {
+class Laser(board: Board) {
     private val laserPath = "images/laser.png"
-    var laserImages = mutableListOf<HTMLImageElement?>()
+    private var laserImages = mutableListOf<HTMLImageElement?>()
 
-    constructor(board: Board) {
-        for (i in 0..(Tank.fireRange - 1)) {
+    init {
+        for (i in 0 until Tank.fireRange) {
             laserImages.add(null)
         }
-        for (i in 0..(Tank.fireRange - 1)) {
-            path2image(laserPath, {image ->
+        for (i in 0 until Tank.fireRange) {
+            path2image(laserPath) { image ->
                 board.gameDiv.appendChild(image)
                 image.style.position = "absolute"
                 image.style.zIndex = "2"
-                laserImages[i] = image})
+                laserImages[i] = image
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 package robot
 
-enum class  Direction(val angle: Int, val x: Byte, val y: Byte) {
+enum class Direction(val angle: Int, val x: Byte, val y: Byte) {
     NORTH(0, 0, -1) {
         override fun opposite() = SOUTH
         override fun counterClockwise() = WEST
@@ -11,12 +11,12 @@ enum class  Direction(val angle: Int, val x: Byte, val y: Byte) {
         override fun counterClockwise() = NORTH
         override fun clockwise() = SOUTH
     },
-    SOUTH(180, 0,1) {
+    SOUTH(180, 0, 1) {
         override fun opposite() = NORTH
         override fun counterClockwise() = EAST
         override fun clockwise() = WEST
     },
-    WEST(270, -1,0) {
+    WEST(270, -1, 0) {
         override fun opposite() = EAST
         override fun counterClockwise() = SOUTH
         override fun clockwise() = NORTH
@@ -27,6 +27,6 @@ enum class  Direction(val angle: Int, val x: Byte, val y: Byte) {
     abstract fun clockwise(): Direction
 
     companion object {
-        fun random() = Direction.values()[random(values().size)]
+        fun random() = values()[random(values().size)]
     }
 }

@@ -4,47 +4,41 @@ import org.w3c.dom.HTMLImageElement
 import robot.Move.*
 import robot.strategy.Strategy
 
-class Tank {
+class Tank(board: Board, val strategy: Strategy) {
     private val maxEnergy = 5
     var energy: Int = maxEnergy
     var hits: Int = 0
     var frags: Int = 0
     var point: Point
     var direction = Direction.random()
-    val strategy: Strategy
     private var oldPoint: Point = Point(0, 0)
     val imageId = tankImagePaths.shift()!!
     var image: HTMLImageElement? = null
-    var hitImage : HTMLImageElement? = null
+    var hitImage: HTMLImageElement? = null
     var rotateAngle = direction.angle
 
-    constructor(board: Board, strategy: Strategy) {
-        this.strategy = strategy
+    init {
         point = board.randomPoint()
-
-        path2image(imageId, {image ->
+        path2image(imageId) { image ->
             image.style.position = "absolute"
             image.style.zIndex = "2"
             image.className = "tank"
             board.gameDiv.appendChild(image)
             this.image = image
-        })
-
-        path2image("images/hit.png", {image ->
+        }
+        path2image("images/hit.png") { image ->
             image.style.position = "absolute"
             image.style.zIndex = "3"
             //image.style.display = "none"
             board.gameDiv.appendChild(image)
             hitImage = image
-        })
-
+        }
         updateTransform()
-
         board.addTank(this)
     }
 
     private fun updateTransform() {
-        val tankTransform =  "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
+        val tankTransform = "translate(${point.x * 20}px, ${point.y * 20}px) rotate(${rotateAngle}deg)"
         image?.style?.transform = tankTransform
         val hitTransform = "translate(${point.x * 20}px, ${point.y * 20}px)"
         hitImage?.style?.transform = hitTransform
@@ -55,8 +49,7 @@ class Tank {
     }
 
     fun move(board: Board) {
-        val move = strategy.getNextMove(Input(this, board))
-        when(move) {
+        when (strategy.getNextMove(Input(this, board))) {
             FORWARD -> {
                 val newPoint = point.withOffset(direction)
                 if (board.validPoint(newPoint) && board.availablePoint(newPoint)) {
@@ -77,7 +70,8 @@ class Tank {
             FIRE -> {
                 board.fire(this)
             }
-            WAIT -> {}
+            WAIT -> {
+            }
         }
         updateTransform()
     }

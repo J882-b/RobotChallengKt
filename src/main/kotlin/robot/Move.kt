@@ -4,7 +4,7 @@ enum class Move {
     FIRE, TURN_LEFT, FORWARD, TURN_RIGHT, WAIT;
 
     companion object {
-        fun random() = Move.values()[random(values().size)]
+        fun random() = values()[random(values().size)]
     }
 }
 

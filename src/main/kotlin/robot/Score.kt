@@ -3,7 +3,7 @@ package robot
 import org.w3c.dom.*
 import kotlin.browser.document
 
-class Score {
+class Score(players: Int) {
     private val scoreDiv = document.getElementById("scoreDiv") as HTMLDivElement
     private val table = document.createElement("table") as HTMLTableElement
     private val headers = mutableListOf("Image", "Name", "Author", "Energy", "Hits", "Frags")
@@ -11,10 +11,10 @@ class Score {
     private val roundText = document.createTextNode("Round: ")
     private val roundNo = document.createTextNode("0")
 
-    constructor(players: Int) {
+    init {
         for (i in 0..players) {
             val tr = document.createElement("tr")
-            for (j in 0..(headerLength - 1)) {
+            for (j in 0 until headerLength) {
                 var cell : Node
                 var tag = "td"
                 if (i == 0) {
@@ -58,5 +58,3 @@ class Score {
         scoreDiv.childNodes[2].asDynamic().data = round
     }
 }
-
-

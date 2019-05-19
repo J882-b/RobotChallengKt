@@ -1,17 +1,7 @@
 package robot
 
-class Status {
-    private val direction: Direction
-    private val point: Point
-    private val energy: Int
-
-    constructor(tank: Tank) {
-        direction = tank.direction
-        point = tank.point
-        energy = tank.energy
-    }
-
-    fun getDirection() = direction
-    fun getLocation() = point
-    fun isAlive() = 0 < energy
+class Status(tank: Tank) {
+    val direction: Direction = tank.direction
+    val location: Point = tank.point
+    val isAlive: Boolean = 0 < tank.energy
 }
