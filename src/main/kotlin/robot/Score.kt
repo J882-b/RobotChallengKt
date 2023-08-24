@@ -1,7 +1,10 @@
 package robot
 
-import org.w3c.dom.*
-import kotlin.browser.document
+import kotlinx.browser.document
+import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLTableElement
+import org.w3c.dom.Node
+import org.w3c.dom.get
 
 class Score(players: Int) {
     private val scoreDiv = document.getElementById("scoreDiv") as HTMLDivElement

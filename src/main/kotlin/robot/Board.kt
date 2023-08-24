@@ -1,8 +1,8 @@
 package robot
 
+import kotlinx.browser.document
+import kotlinx.browser.window
 import org.w3c.dom.HTMLDivElement
-import kotlin.browser.document
-import kotlin.browser.window
 
 class Board {
     val tanks: MutableList<Tank> = mutableListOf()

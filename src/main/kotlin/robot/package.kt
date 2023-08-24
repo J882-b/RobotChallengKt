@@ -1,8 +1,8 @@
 package robot
 
+import kotlinx.browser.document
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.events.Event
-import kotlin.browser.document
 import kotlin.random.Random
 
 fun main() {

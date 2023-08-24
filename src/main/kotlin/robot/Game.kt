@@ -1,7 +1,7 @@
 package robot
 
+import kotlinx.browser.window
 import robot.strategy.*
-import kotlin.browser.window
 
 class Game {
     private val board = Board()
